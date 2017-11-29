@@ -1,4 +1,19 @@
-# Helper Methods
+
+
+WIN_COMBINATIONS = [
+  [0,1,2],
+  [3,4,5],
+  [6,7,8],
+  [0,3,6],
+  [1,4,7],
+  [2,5,8],
+  [0,4,8],
+  [2,4,6]
+]
+def play(board)
+  turn(board)
+end
+
 def display_board(board)
   puts " #{board[0]} | #{board[1]} | #{board[2]} "
   puts "-----------"
@@ -23,6 +38,16 @@ def valid_move?(board, index)
   index.between?(0,8) && !position_taken?(board, index)
 end
 
+def turn_count(board)
+  count = 0
+  board.each do |move|
+    if move == "X" || move == "O"
+      count += 1
+  end
+end
+  count
+end
+
 def turn(board)
   puts "Please enter 1-9:"
   input = gets.strip
@@ -31,19 +56,63 @@ def turn(board)
     move(board, index)
     display_board(board)
   else
-    turn(board)
+    if !won?(board)
+      return turn(board)
   end
 end
 
+def current_player(board)
+  turn_count(board).even? ? "X" : "O"
+  end
 
-def play(board)
-  counter = 0
-until counter == 9
-  turn(board)
-  counter += 1
+def position_taken?(board, index)
+  !(board[index].nil? || board[index] == " ")
+end
+
+def won?(board)
+  if
+  WIN_COMBINATIONS.each do |win_combination|
+  win_index_1 = win_combination[0]
+  win_index_2 = win_combination[1]
+  win_index_3 = win_combination[2]
+
+
+  position_1 = board[win_index_1] # load the value of the board at win_index_1
+  position_2 = board[win_index_2] # load the value of the board at win_index_2
+  position_3 = board[win_index_3]
+ # load the value of the board at win_index_2
+ # load the value of the board at win_index
+ if position_1 == "X" && position_2 == "X" && position_3 == "X" ||
+ position_1 == "O" && position_2 == "O" && position_3 == "O"
+   return win_combination
+ end
+ end
+else false
+ end
+ end
+
+ def full?(board)
+   if !board.any?{|i| i == " "}
+     true
+   end
+ end
+
+ def draw?(board)
+  if !won?(board) && full?(board)
+  return true
+else return false
 end
 end
 
+def over?(board)
+  if won?(board) || full?(board) || draw?(board)
+    return true
+  else return false
+  end
+end
 
-
-# Define your play method below
+def winner(board)
+   if winning_combo = won?(board)
+     return board[winning_combo.first]
+   end
+ end
