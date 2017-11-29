@@ -115,3 +115,5 @@ def winner(board)
    if winning_combo = won?(board)
      return board[winning_combo.first]
 end
+end
+end
